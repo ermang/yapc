@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.eg.yapc.controller.MainSceneController">
+
+    <!-- Top menu bar -->
+    <top>
+        <MenuBar>
+            <menus>
+                <Menu text="File">
+                    <items>
+                        <MenuItem text="New"/>
+                        <MenuItem text="Open"/>
+                        <SeparatorMenuItem/>
+                        <MenuItem text="Exit"/>
+                    </items>
+                </Menu>
+
+                <Menu text="Edit">
+                    <items>
+                        <MenuItem text="Cut"/>
+                        <MenuItem text="Copy"/>
+                        <MenuItem text="Paste"/>
+                    </items>
+                </Menu>
+
+                <Menu text="Help">
+                    <items>
+                        <MenuItem text="About"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+
+    <left>
+        <TextField  promptText="https://httpbin.org/get"/>
+    </left>
+
+    <!-- Main content area -->
+    <center>
+        <VBox>
+            <HBox>
+                <ComboBox fx:id="httpMethodComboBox">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="GET"/>
+                            <String fx:value="POST"/>
+                            <String fx:value="PUT"/>
+                            <String fx:value="DELETE"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <Label text="URL" BorderPane.alignment="CENTER"/>
+                <TextField fx:id="urlTextField" promptText="https://httpbin.org/get"/>
+                <Button text="Send" fx:id="sendButton" onAction="#onSendClick"/>
+            </HBox>
+
+            <Label text="Request Header" />
+
+            <TableView fx:id="requestHeaderTableView" editable="true">
+                <columns>
+                    <TableColumn fx:id="requestHeaderNameColumn" text="Header Name"/>
+                    <TableColumn fx:id="requestHeaderValueColumn" text="Header Value" editable="true"/>
+                    <TableColumn fx:id="addRemoveButtonColumn" text="Add/Remove"/>
+                </columns>
+            </TableView>
+
+            <Label text="Request Body" />
+
+            <TextArea fx:id="requestBodyTextArea" />
+
+            <Label text="Response Status" BorderPane.alignment="CENTER"/>
+            <Label fx:id="responseStatusLabel"/>
+
+            <Label text="Response Body" BorderPane.alignment="CENTER"/>
+            <TextArea fx:id="responseBodyTextArea" editable="false"/>
+        </VBox>
+    </center>
+
+</BorderPane>
