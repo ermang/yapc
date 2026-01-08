@@ -2,19 +2,23 @@ package com.eg.yapc.controller;
 
 import com.eg.yapc.RequestHeaderItem;
 import com.eg.yapc.YapcConstant;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.Region;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.*;
 
 public class MainSceneController {
 
@@ -33,6 +37,9 @@ public class MainSceneController {
 
     @FXML
     private TableColumn<RequestHeaderItem, Void> addRemoveButtonColumn;
+
+    @FXML
+    private TextArea responseHeadersTextArea;
 
     @FXML
     private TextArea responseBodyTextArea;
@@ -126,8 +133,8 @@ public class MainSceneController {
         });
 
         requestHeaderTableView.setItems(FXCollections.observableArrayList(
-                new RequestHeaderItem("Content-Type:", "application/json"),
-                new RequestHeaderItem("User-Agent:", "Java/17 HttpClient")
+                new RequestHeaderItem("Content-Type", "application/json"),
+                new RequestHeaderItem("User-Agent", "Java/17 HttpClient")
         ));
 
 
@@ -139,6 +146,27 @@ public class MainSceneController {
                 }
                 """ );
 
+        //set request header table size dynamically
+        requestHeaderTableView.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                Platform.runLater(() -> {
+                    // this runs AFTER the TableView is in the scene and layout is done
+                    Node header = requestHeaderTableView.lookup("TableHeaderRow");
+                    double headerHeight = header.prefHeight(-1);
+                    double rowHeight = requestHeaderTableView.getFixedCellSize() > 0
+                            ? requestHeaderTableView.getFixedCellSize()
+                            : 24;
+                    int visibleRows = requestHeaderTableView.getItems().size() + 3; //show ~3 empty rows
+
+                    requestHeaderTableView.setPrefHeight(headerHeight + rowHeight * visibleRows);
+                    requestHeaderTableView.setMinHeight(Region.USE_PREF_SIZE);
+                    requestHeaderTableView.setMaxHeight(Region.USE_PREF_SIZE);
+                });
+            }
+        });
+
+
+        urlTextField.setText("https://httpbin.org/get"); //TODO: remove me
     }
 
     @FXML
@@ -149,9 +177,15 @@ public class MainSceneController {
 
         HttpClient client = HttpClient.newHttpClient();
 
+        List<String> requestHeadersList = new ArrayList<>();
+        for (RequestHeaderItem requestHeaderItem : requestHeaderTableView.getItems()) {
+            requestHeadersList.add(requestHeaderItem.getHeaderName());
+            requestHeadersList.add(requestHeaderItem.getHeaderValue());
+        }
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(urlTextField.getText().trim()))
-                //.headers()
+                .headers(requestHeadersList.toArray(new String[0]))
                 .method(httpMethod,
                         httpMethod.equals("GET") || requestBodyTextArea.getText().trim().isBlank() ? HttpRequest.BodyPublishers.noBody() :
                                 HttpRequest.BodyPublishers.ofString(requestBodyTextArea.getText().trim()))
@@ -163,7 +197,18 @@ public class MainSceneController {
         System.out.println("Status: " + response.statusCode());
         responseStatusLabel.setText(String.valueOf(response.statusCode()));
         System.out.println("Body:\n" + response.body());
+        Map<String, List<String>> responseHeadersMap = response.headers().map();
+
+        responseHeadersTextArea.setText("");
+
+        for (Map.Entry<String, List<String>> entry : new TreeMap<> (responseHeadersMap).entrySet()) {
+            responseHeadersTextArea.appendText(entry.getKey() + ":");
+            responseHeadersTextArea.appendText(String.join(" ", entry.getValue()));
+            responseHeadersTextArea.appendText(System.lineSeparator());
+        }
+
         responseBodyTextArea.setText(String.valueOf(response.body()));
+        System.out.println("Response Header:\n" + response.headers());
     }
 }
 

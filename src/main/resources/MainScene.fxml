@@ -41,7 +41,7 @@
     </top>
 
     <left>
-        <TextField  promptText="https://httpbin.org/get"/>
+        <Label text="Collections"/>
     </left>
 
     <!-- Main content area -->
@@ -59,11 +59,11 @@
                     </items>
                 </ComboBox>
                 <Label text="URL" BorderPane.alignment="CENTER"/>
-                <TextField fx:id="urlTextField" promptText="https://httpbin.org/get"/>
+                <TextField fx:id="urlTextField" prefColumnCount="24" promptText="https://httpbin.org/get"/>
                 <Button text="Send" fx:id="sendButton" onAction="#onSendClick"/>
             </HBox>
 
-            <Label text="Request Header" />
+            <Label text="Request Headers" />
 
             <TableView fx:id="requestHeaderTableView" editable="true">
                 <columns>
@@ -75,13 +75,20 @@
 
             <Label text="Request Body" />
 
-            <TextArea fx:id="requestBodyTextArea" />
+            <TextArea fx:id="requestBodyTextArea" prefRowCount="12"/>
 
             <Label text="Response Status" BorderPane.alignment="CENTER"/>
             <Label fx:id="responseStatusLabel"/>
 
+            <TitledPane text="Response Headers" expanded="false">
+                <content>
+                    <TextArea fx:id="responseHeadersTextArea" editable="false" prefRowCount="8" wrapText="true"/>
+                </content>
+            </TitledPane>
+
+
             <Label text="Response Body" BorderPane.alignment="CENTER"/>
-            <TextArea fx:id="responseBodyTextArea" editable="false"/>
+            <TextArea fx:id="responseBodyTextArea" editable="false" prefRowCount="12"/>
         </VBox>
     </center>
 

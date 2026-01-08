@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -18,7 +19,7 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainScene.fxml"));
         Parent root = loader.load();
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, Color.TRANSPARENT);
         stage.setTitle("YAPC");
         stage.setScene(scene);
         stage.show();
