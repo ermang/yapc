@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.ComboBox?>
@@ -10,6 +11,10 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.eg.yapc.controller.MainSceneController">
 
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
     <!-- Top menu bar -->
     <top>
         <MenuBar>
@@ -18,6 +23,7 @@
                     <items>
                         <MenuItem text="New"/>
                         <MenuItem text="Open"/>
+                        <MenuItem text="New Collection" onAction="#onNewCollectionClicked"/>
                         <SeparatorMenuItem/>
                         <MenuItem text="Exit"/>
                     </items>
@@ -41,7 +47,23 @@
     </top>
 
     <left>
-        <Label text="Collections"/>
+        <VBox>
+            <Label text="Collections"/>
+<!--            <TreeView fx:id="collectionsTreeView">-->
+<!--                <root>-->
+<!--                    <TreeItem value="Collections" expanded="true">-->
+<!--                        <children>-->
+<!--                            <TreeItem value="Child A"/>-->
+<!--                            <TreeItem value="Child B"/>-->
+<!--                        </children>-->
+<!--                    </TreeItem>-->
+<!--                </root>-->
+<!--            </TreeView>-->
+            <VBox fx:id="collectionsVBox">
+
+            </VBox>
+        </VBox>
+
     </left>
 
     <!-- Main content area -->
@@ -61,6 +83,7 @@
                 <Label text="URL" BorderPane.alignment="CENTER"/>
                 <TextField fx:id="urlTextField" prefColumnCount="24" promptText="https://httpbin.org/get"/>
                 <Button text="Send" fx:id="sendButton" onAction="#onSendClick"/>
+                <Button text="Save" fx:id="saveButton" onAction="#onSaveClick"/>
             </HBox>
 
             <Label text="Request Headers" />

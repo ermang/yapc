@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<GridPane xmlns="http://javafx.com/javafx/21"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.eg.yapc.controller.SaveRequestSceneController"
+          hgap="10" vgap="10" alignment="center">
+
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <!-- Username Label and Field -->
+    <Label text="Request Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <TextField fx:id="requestNameTextField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+    <!-- Password Label and Field -->
+    <Label text="Which collection to save?" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <ListView fx:id="collectionNamesListView" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+    <!-- Login Button -->
+    <Button text="Save"
+            fx:id="saveButton"
+            GridPane.rowIndex="2"
+            GridPane.columnIndex="0"
+            onAction="#onSaveClicked"/>
+
+    <!-- Sign Up Button -->
+<!--    <Button text="Sign Up"-->
+<!--            fx:id="signUpButton"-->
+<!--            GridPane.rowIndex="2"-->
+<!--            GridPane.columnIndex="1"-->
+<!--            onAction="#onSignUpClick"/>-->
+
+</GridPane>

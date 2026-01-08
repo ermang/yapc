@@ -1,17 +1,23 @@
 package com.eg.yapc.controller;
 
-import com.eg.yapc.RequestHeaderItem;
-import com.eg.yapc.YapcConstant;
+import com.eg.yapc.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URI;
@@ -26,6 +32,9 @@ public class MainSceneController {
     @FXML private TextField urlTextField;
     @FXML private ComboBox<String> httpMethodComboBox;
     @FXML private TextArea requestBodyTextArea;
+
+//    @FXML private TreeView collectionsTreeView;
+    @FXML private VBox collectionsVBox;
 
     @FXML
     private TableView<RequestHeaderItem> requestHeaderTableView;
@@ -49,6 +58,7 @@ public class MainSceneController {
     @FXML
     public void initialize() {
         System.out.println("FXML Loaded");
+        //collectionsVBox.setVgrow(treeView, Priority.NEVER);
         httpMethodComboBox.getSelectionModel().selectFirst();
 
 
@@ -209,6 +219,54 @@ public class MainSceneController {
 
         responseBodyTextArea.setText(String.valueOf(response.body()));
         System.out.println("Response Header:\n" + response.headers());
+    }
+
+    @FXML
+    private void onSaveClick(ActionEvent actionEvent) {
+        System.out.println("Save clicked");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SaveRequestScene.fxml"));
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root);
+
+            Stage stage = new Stage();
+            stage.setTitle("Dialog Window");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL); // optional
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        reloadCollectionsFromYapcSystem();
+    }
+
+    @FXML
+    private void onNewCollectionClicked(ActionEvent event) {
+        System.out.println("onNewCollectionClicked");
+
+    }
+
+    private void reloadCollectionsFromYapcSystem() {
+        collectionsVBox.getChildren().clear();
+
+        YapcSystem yapcSystem = YapcSystem.getInstance();
+
+        for (YapcCollection yapcCollection: yapcSystem.getYapcCollectionList()) {
+            TreeItem<String> treeRoot = new TreeItem<>(yapcCollection.getName());
+            treeRoot.setExpanded(true);
+
+
+            for (YapcCollectionItem yapcCollectionItem : yapcCollection.getCollectionItemList()) {
+                TreeItem<String> child = new TreeItem<>(yapcCollectionItem.getName());
+                treeRoot.getChildren().add(child);
+            }
+
+            TreeView<String> treeView = new TreeView<>(treeRoot);
+            collectionsVBox.getChildren().add(treeView);
+        }
     }
 }
 
