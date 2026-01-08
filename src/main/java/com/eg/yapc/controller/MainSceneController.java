@@ -232,7 +232,7 @@ public class MainSceneController {
             Scene scene = new Scene(root);
 
             Stage stage = new Stage();
-            stage.setTitle("Dialog Window");
+            stage.setTitle("Save request to collection");
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); // optional
             stage.showAndWait();

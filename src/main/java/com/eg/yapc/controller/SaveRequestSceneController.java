@@ -22,14 +22,12 @@ public class SaveRequestSceneController {
         System.out.println("FXML Loaded");
         yapcSystem = YapcSystem.getInstance();
         collectionNamesListView.getItems().addAll(yapcSystem.getYapcCollectionNamesList());
-        //collectionsVBox.setVgrow(treeView, Priority.NEVER);
 
         collectionNamesListView.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldVal, newVal) -> {
                     System.out.println("Selected: " + newVal);
                     selectedCollectionName = newVal;
                 });
-
 
     }
 

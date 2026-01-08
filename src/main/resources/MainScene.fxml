@@ -47,7 +47,10 @@
     </top>
 
     <left>
-        <VBox>
+        <VBox spacing="10" >
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
             <Label text="Collections"/>
 <!--            <TreeView fx:id="collectionsTreeView">-->
 <!--                <root>-->
@@ -59,17 +62,21 @@
 <!--                    </TreeItem>-->
 <!--                </root>-->
 <!--            </TreeView>-->
-            <VBox fx:id="collectionsVBox">
-
-            </VBox>
+            <VBox fx:id="collectionsVBox"/>
         </VBox>
 
     </left>
 
     <!-- Main content area -->
     <center>
-        <VBox>
-            <HBox>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <HBox spacing="10">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
                 <ComboBox fx:id="httpMethodComboBox">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
