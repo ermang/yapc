@@ -42,7 +42,7 @@ public class YapcSystem {
 
     public void removeRequestFromCollection(String requestName, String collectionName) {
         for ( YapcCollection yapcCollection : yapcCollectionList) {
-            if (requestName.equals(yapcCollection.getName())) {
+            if (collectionName.equals(yapcCollection.getName())) {
                 yapcCollection.deleteItemWithNameFromCollection(requestName);
                 break;
             }

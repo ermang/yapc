@@ -138,7 +138,7 @@ public class MainSceneController {
         MainTabSceneController mainTabSceneController = loader.getController();
         mainTabSceneController.setMainSceneController(this);
         YapcRequest yapcRequest = yapcSystem.getItemFromCollection(selectedItem.getParent().getValue(), selectedItem.getValue());
-        mainTabSceneController.updateUiWithExistingYapcCollectiomItem(yapcRequest);
+        mainTabSceneController.updateUiWithExistingYapcRequest(yapcRequest);
         mainTabSceneController.initData(selectedItem.getValue(), selectedItem.getParent().getValue());
 
         Tab tab = new Tab(selectedItem.getValue());

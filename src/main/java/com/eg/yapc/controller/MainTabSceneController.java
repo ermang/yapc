@@ -1,8 +1,8 @@
 package com.eg.yapc.controller;
 
 import com.eg.yapc.RequestHeaderItem;
-import com.eg.yapc.YapcRequest;
 import com.eg.yapc.YapcConstant;
+import com.eg.yapc.YapcRequest;
 import com.eg.yapc.YapcSystem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -276,7 +276,7 @@ public class MainTabSceneController {
         yapcSystem.addRequestToCollection(yapcRequest, existingCollectionName);
     }
 
-    public void updateUiWithExistingYapcCollectiomItem(YapcRequest yapcRequest) {
+    public void updateUiWithExistingYapcRequest(YapcRequest yapcRequest) {
         this.yapcRequest = yapcRequest;
 
         this.urlTextField.setText(yapcRequest.url);
