@@ -34,7 +34,7 @@ public class MainSceneController {
         Parent tabContent = loader.load();
         MainTabSceneController mainTabSceneController = loader.getController();
         mainTabSceneController.setMainSceneController(this);
-        //mainTabSceneController.initData();
+
 
         Tab tab = new Tab("New Request");
         tab.setContent(tabContent);
