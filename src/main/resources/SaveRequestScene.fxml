@@ -28,11 +28,4 @@
             GridPane.columnIndex="0"
             onAction="#onSaveClicked"/>
 
-    <!-- Sign Up Button -->
-<!--    <Button text="Sign Up"-->
-<!--            fx:id="signUpButton"-->
-<!--            GridPane.rowIndex="2"-->
-<!--            GridPane.columnIndex="1"-->
-<!--            onAction="#onSignUpClick"/>-->
-
 </GridPane>
