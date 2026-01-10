@@ -1,5 +1,6 @@
 package com.eg.yapc.controller;
 
+import com.eg.yapc.YapcCollectionItem;
 import com.eg.yapc.YapcSystem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,6 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import java.net.http.HttpRequest;
+import java.util.List;
 
 public class SaveRequestSceneController {
 
@@ -16,6 +20,10 @@ public class SaveRequestSceneController {
     @FXML private Label responseStatusLabel;
     @FXML private TextField requestNameTextField;
     @FXML private ListView<String> collectionNamesListView;
+    private String httpMethod;
+    private String url;
+    private List<String> requestHeaderList;
+    private String requestBody;
 
     @FXML
     public void initialize() {
@@ -38,10 +46,30 @@ public class SaveRequestSceneController {
         System.out.println("RequestnameTextField=" + requestNameTextField.getText());
         System.out.println("selectedCollectionName=" + selectedCollectionName);
 
-        yapcSystem.addRequestToCollection(requestNameTextField.getText(), selectedCollectionName);
+        if (requestNameTextField.getText().isBlank()) {
+
+            return;
+        }
+
+        if (selectedCollectionName.isBlank()) {
+
+            return;
+        }
+
+        YapcCollectionItem yapcCollectionItem= new YapcCollectionItem(httpMethod, requestNameTextField.getText().trim(), url, requestHeaderList, requestBody);
+
+        yapcSystem.addRequestToCollection(yapcCollectionItem, selectedCollectionName);
 
         Stage stage = (Stage) requestNameTextField.getScene().getWindow();
         stage.close();
+    }
+
+
+    public void initData(String httpMethod, String url, List<String> requestHeadersList, String requestBody) {
+        this.httpMethod= httpMethod;
+        this.url = url;
+        this.requestHeaderList = requestHeadersList;
+        this.requestBody = requestBody;
     }
 }
 

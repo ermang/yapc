@@ -11,9 +11,9 @@ public class YapcSystem {
 
     private YapcSystem() {
         this.yapcCollectionList = new ArrayList<>();
-        YapcCollectionItem yapcCollectionItem = new YapcCollectionItem("req1");
+        //YapcCollectionItem yapcCollectionItem = new YapcCollectionItem("req1");
         List<YapcCollectionItem> yapcCollectionItemList = new ArrayList<>();
-        yapcCollectionItemList.add(yapcCollectionItem);
+        //yapcCollectionItemList.add(yapcCollectionItem);
         yapcCollectionList.add(new YapcCollection("col1", yapcCollectionItemList));
     }
 
@@ -32,10 +32,10 @@ public class YapcSystem {
         return yapcCollectionList.stream().map(YapcCollection::getName).toList();
     }
 
-    public void addRequestToCollection(String requestName, String selectedCollectionName) {
+    public void addRequestToCollection(YapcCollectionItem yapcCollectionItem, String selectedCollectionName) {
         for (YapcCollection yapcCollection : yapcCollectionList) {
             if (selectedCollectionName.equals(yapcCollection.getName())) {
-                yapcCollection.getCollectionItemList().add(new YapcCollectionItem(requestName));
+                yapcCollection.getCollectionItemList().add(yapcCollectionItem);
             }
         }
     }

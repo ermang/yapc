@@ -229,6 +229,17 @@ public class MainSceneController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/SaveRequestScene.fxml"));
             Parent root = loader.load();
 
+            SaveRequestSceneController saveRequestSceneController = loader.getController();
+
+            List<String> requestHeadersList = new ArrayList<>();
+            for (RequestHeaderItem requestHeaderItem : requestHeaderTableView.getItems()) {
+                requestHeadersList.add(requestHeaderItem.getHeaderName());
+                requestHeadersList.add(requestHeaderItem.getHeaderValue());
+            }
+
+            saveRequestSceneController.initData(httpMethodComboBox.getSelectionModel().getSelectedItem(), urlTextField.getText().trim(),
+                    requestHeadersList, requestBodyTextArea.getText().trim());
+
             Scene scene = new Scene(root);
 
             Stage stage = new Stage();
@@ -260,7 +271,7 @@ public class MainSceneController {
 
 
             for (YapcCollectionItem yapcCollectionItem : yapcCollection.getCollectionItemList()) {
-                TreeItem<String> child = new TreeItem<>(yapcCollectionItem.getName());
+                TreeItem<String> child = new TreeItem<>(yapcCollectionItem.name);
                 treeRoot.getChildren().add(child);
             }
 
