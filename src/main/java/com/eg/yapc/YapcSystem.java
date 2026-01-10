@@ -14,7 +14,7 @@ public class YapcSystem {
         //YapcCollectionItem yapcCollectionItem = new YapcCollectionItem("req1");
         List<YapcCollectionItem> yapcCollectionItemList = new ArrayList<>();
         //yapcCollectionItemList.add(yapcCollectionItem);
-        yapcCollectionList.add(new YapcCollection("col1", yapcCollectionItemList));
+        yapcCollectionList.add(new YapcCollection("Dummy Collection", yapcCollectionItemList));
     }
 
     public static YapcSystem getInstance() {

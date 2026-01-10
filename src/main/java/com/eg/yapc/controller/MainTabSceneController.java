@@ -162,7 +162,6 @@ public class MainTabSceneController {
             }
         });
 
-
         urlTextField.setText("https://httpbin.org/get"); //TODO: remove me
     }
 
@@ -223,6 +222,7 @@ public class MainTabSceneController {
             SaveRequestSceneController saveRequestSceneController = loader.getController();
 
             List<String> requestHeadersList = new ArrayList<>();
+
             for (RequestHeaderItem requestHeaderItem : requestHeaderTableView.getItems()) {
                 requestHeadersList.add(requestHeaderItem.getHeaderName());
                 requestHeadersList.add(requestHeaderItem.getHeaderValue());
@@ -248,4 +248,5 @@ public class MainTabSceneController {
     public void setMainSceneController(MainSceneController mainSceneController) {
         this.mainSceneController = mainSceneController;
     }
+
 }

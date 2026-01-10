@@ -7,22 +7,27 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainSceneController {
 
     @FXML private TabPane mainTabPane;
     @FXML private VBox collectionsVBox;
 
+    private YapcSystem yapcSystem;
+    private List<String> openTabNames;
+
 
     @FXML
     public void initialize() throws IOException {
+        yapcSystem = YapcSystem.getInstance();
+        openTabNames = new ArrayList<>();
+        reloadCollectionsFromYapcSystem();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainTabScene.fxml"));
 
@@ -46,9 +51,8 @@ public class MainSceneController {
     }
 
     public void reloadCollectionsFromYapcSystem() {
-        collectionsVBox.getChildren().clear();
 
-        YapcSystem yapcSystem = YapcSystem.getInstance();
+        collectionsVBox.getChildren().clear();
 
         for (YapcCollection yapcCollection: yapcSystem.getYapcCollectionList()) {
             TreeItem<String> treeRoot = new TreeItem<>(yapcCollection.getName());
@@ -61,8 +65,48 @@ public class MainSceneController {
             }
 
             TreeView<String> treeView = new TreeView<>(treeRoot);
+
+            treeView.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2) {
+                    TreeItem<String> selectedItem =
+                            treeView.getSelectionModel().getSelectedItem();
+
+                    if (selectedItem != null && selectedItem.getParent() != null) {
+                        try {
+                            onTreeItemDoubleClicked(selectedItem);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            });
+
             collectionsVBox.getChildren().add(treeView);
         }
+    }
+
+    private void onTreeItemDoubleClicked(TreeItem<String> selectedItem) throws IOException {
+
+        if (openTabNames.contains(selectedItem.getValue()))
+            return;
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainTabScene.fxml"));
+
+        Parent tabContent = loader.load();
+        MainTabSceneController mainTabSceneController = loader.getController();
+        mainTabSceneController.setMainSceneController(this);
+
+        Tab tab = new Tab(selectedItem.getValue());
+        tab.setOnCloseRequest(event -> {openTabNames.remove(selectedItem.getValue());});
+        tab.setContent(tabContent);
+        tab.setClosable(true);
+
+        mainTabPane.getTabs().add(tab);
+        mainTabPane.getSelectionModel().select(tab);
+
+        openTabNames.add(selectedItem.getValue());
+
+
     }
 }
 
