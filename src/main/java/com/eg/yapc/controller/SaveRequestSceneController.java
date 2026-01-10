@@ -28,7 +28,7 @@ public class SaveRequestSceneController {
     public void initialize() {
         System.out.println("FXML Loaded");
         yapcSystem = YapcSystem.getInstance();
-        collectionNamesListView.getItems().addAll(yapcSystem.getYapcCollectionNamesList());
+        collectionNamesListView.getItems().addAll(yapcSystem.getYapcCollectionNames());
 
         collectionNamesListView.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldVal, newVal) -> {

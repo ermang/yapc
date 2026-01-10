@@ -272,7 +272,7 @@ public class MainTabSceneController {
         YapcRequest yapcRequest = new YapcRequest(httpMethodComboBox.getSelectionModel().getSelectedItem(), existingRequestName, urlTextField.getText().trim(), requestHeadersList,
                 requestBodyTextArea.getText().trim());
 
-        yapcSystem.removeRequestWithNameFromCollection(existingRequestName, existingCollectionName);
+        yapcSystem.removeRequestFromCollection(existingRequestName, existingCollectionName);
         yapcSystem.addRequestToCollection(yapcRequest, existingCollectionName);
     }
 

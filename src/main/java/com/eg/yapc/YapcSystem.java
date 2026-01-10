@@ -28,22 +28,22 @@ public class YapcSystem {
         return yapcCollectionList;
     }
 
-    public List<String> getYapcCollectionNamesList() {
+    public List<String> getYapcCollectionNames() {
         return yapcCollectionList.stream().map(YapcCollection::getName).toList();
     }
 
-    public void addRequestToCollection(YapcRequest yapcRequest, String selectedCollectionName) {
+    public void addRequestToCollection(YapcRequest yapcRequest, String collectionName) {
         for (YapcCollection yapcCollection : yapcCollectionList) {
-            if (selectedCollectionName.equals(yapcCollection.getName())) {
+            if (collectionName.equals(yapcCollection.getName())) {
                 yapcCollection.getCollectionItemList().add(yapcRequest);
             }
         }
     }
 
-    public void removeRequestWithNameFromCollection(String existingRequestName, String existingCollectionName) {
+    public void removeRequestFromCollection(String requestName, String collectionName) {
         for ( YapcCollection yapcCollection : yapcCollectionList) {
-            if (existingRequestName.equals(yapcCollection.getName())) {
-                yapcCollection.deleteItemWithNameFromCollection(existingRequestName);
+            if (requestName.equals(yapcCollection.getName())) {
+                yapcCollection.deleteItemWithNameFromCollection(requestName);
                 break;
             }
         }
