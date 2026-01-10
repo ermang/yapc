@@ -11,10 +11,10 @@ public class YapcSystem {
 
     private YapcSystem() {
         this.yapcCollectionList = new ArrayList<>();
-        //YapcCollectionItem yapcCollectionItem = new YapcCollectionItem("req1");
-        List<YapcCollectionItem> yapcCollectionItemList = new ArrayList<>();
-        //yapcCollectionItemList.add(yapcCollectionItem);
-        yapcCollectionList.add(new YapcCollection("Dummy Collection", yapcCollectionItemList));
+
+        List<YapcRequest> yapcRequestList = new ArrayList<>();
+
+        yapcCollectionList.add(new YapcCollection("Dummy Collection", yapcRequestList));
     }
 
     public static YapcSystem getInstance() {
@@ -32,11 +32,30 @@ public class YapcSystem {
         return yapcCollectionList.stream().map(YapcCollection::getName).toList();
     }
 
-    public void addRequestToCollection(YapcCollectionItem yapcCollectionItem, String selectedCollectionName) {
+    public void addRequestToCollection(YapcRequest yapcRequest, String selectedCollectionName) {
         for (YapcCollection yapcCollection : yapcCollectionList) {
             if (selectedCollectionName.equals(yapcCollection.getName())) {
-                yapcCollection.getCollectionItemList().add(yapcCollectionItem);
+                yapcCollection.getCollectionItemList().add(yapcRequest);
             }
         }
+    }
+
+    public void removeRequestWithNameFromCollection(String existingRequestName, String existingCollectionName) {
+        for ( YapcCollection yapcCollection : yapcCollectionList) {
+            if (existingRequestName.equals(yapcCollection.getName())) {
+                yapcCollection.deleteItemWithNameFromCollection(existingRequestName);
+                break;
+            }
+        }
+    }
+
+    public YapcRequest getItemFromCollection(String collectionName, String requestName) {
+        for (YapcCollection yapcCollection : yapcCollectionList)
+            if (collectionName.equals(yapcCollection.getName()))
+                for (YapcRequest yapcRequest : yapcCollection.getCollectionItemList())
+                    if (requestName.equals(yapcRequest.name))
+                        return yapcRequest;
+
+        return null;
     }
 }

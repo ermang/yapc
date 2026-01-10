@@ -1,20 +1,19 @@
 package com.eg.yapc.controller;
 
 import com.eg.yapc.RequestHeaderItem;
+import com.eg.yapc.YapcRequest;
 import com.eg.yapc.YapcConstant;
-import javafx.application.Platform;
+import com.eg.yapc.YapcSystem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -41,10 +40,15 @@ public class MainTabSceneController {
     @FXML private TextArea requestBodyTextArea;
     @FXML private Label responseStatusLabel;
 
+    private YapcSystem yapcSystem;
     private MainSceneController mainSceneController;
+    private String existingRequestName;
+    private String existingCollectionName;
+    private YapcRequest yapcRequest;
 
     @FXML
     public void initialize() {
+        this.yapcSystem = YapcSystem.getInstance();
 
         httpMethodComboBox.getSelectionModel().selectFirst();
 
@@ -143,30 +147,34 @@ public class MainTabSceneController {
                 }
                 """ );
 
+        //TODO: FIX
         //set request header table size dynamically
-        requestHeaderTableView.sceneProperty().addListener((obs, oldScene, newScene) -> {
-            if (newScene != null) {
-                Platform.runLater(() -> {
-                    // this runs AFTER the TableView is in the scene and layout is done
-                    Node header = requestHeaderTableView.lookup("TableHeaderRow");
-                    double headerHeight = header.prefHeight(-1);
-                    double rowHeight = requestHeaderTableView.getFixedCellSize() > 0
-                            ? requestHeaderTableView.getFixedCellSize()
-                            : 24;
-                    int visibleRows = requestHeaderTableView.getItems().size() + 3; //show ~3 empty rows
-
-                    requestHeaderTableView.setPrefHeight(headerHeight + rowHeight * visibleRows);
-                    requestHeaderTableView.setMinHeight(Region.USE_PREF_SIZE);
-                    requestHeaderTableView.setMaxHeight(Region.USE_PREF_SIZE);
-                });
-            }
-        });
+//        requestHeaderTableView.sceneProperty().addListener((obs, oldScene, newScene) -> {
+//            if (newScene != null) {
+//                Platform.runLater(() -> {
+//                    // this runs AFTER the TableView is in the scene and layout is done
+//                    Node header = requestHeaderTableView.lookup("TableHeaderRow");
+//                    double headerHeight = header.prefHeight(-1);
+//                    double rowHeight = requestHeaderTableView.getFixedCellSize() > 0
+//                            ? requestHeaderTableView.getFixedCellSize()
+//                            : 24;
+//                    int visibleRows = requestHeaderTableView.getItems().size() + 3; //show ~3 empty rows
+//
+//                    requestHeaderTableView.setPrefHeight(headerHeight + rowHeight * visibleRows);
+//                    requestHeaderTableView.setMinHeight(Region.USE_PREF_SIZE);
+//                    requestHeaderTableView.setMaxHeight(Region.USE_PREF_SIZE);
+//                });
+//            }
+//        });
 
         urlTextField.setText("https://httpbin.org/get"); //TODO: remove me
+
+
     }
 
-    public void initData() {
-
+    public void initData(String existingRequestName, String existingCollectionName) {
+        this.existingRequestName = existingRequestName;
+        this.existingCollectionName = existingCollectionName;
     }
 
     @FXML
@@ -215,6 +223,10 @@ public class MainTabSceneController {
     private void onSaveClick(ActionEvent actionEvent) {
         System.out.println("Save clicked");
 
+        if(existingRequestName != null)
+            overwriteExistingRequest();
+
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/SaveRequestScene.fxml"));
             Parent root = loader.load();
@@ -249,4 +261,25 @@ public class MainTabSceneController {
         this.mainSceneController = mainSceneController;
     }
 
+    private void overwriteExistingRequest() {
+        List<String> requestHeadersList = new ArrayList<>();
+
+        for (RequestHeaderItem requestHeaderItem : requestHeaderTableView.getItems()) {
+            requestHeadersList.add(requestHeaderItem.getHeaderName());
+            requestHeadersList.add(requestHeaderItem.getHeaderValue());
+        }
+
+        YapcRequest yapcRequest = new YapcRequest(httpMethodComboBox.getSelectionModel().getSelectedItem(), existingRequestName, urlTextField.getText().trim(), requestHeadersList,
+                requestBodyTextArea.getText().trim());
+
+        yapcSystem.removeRequestWithNameFromCollection(existingRequestName, existingCollectionName);
+        yapcSystem.addRequestToCollection(yapcRequest, existingCollectionName);
+    }
+
+    public void updateUiWithExistingYapcCollectiomItem(YapcRequest yapcRequest) {
+        this.yapcRequest = yapcRequest;
+
+        this.urlTextField.setText(yapcRequest.url);
+        this.requestBodyTextArea.setText(yapcRequest.requestBody);
+    }
 }

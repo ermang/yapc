@@ -4,9 +4,9 @@ import java.util.List;
 
 public class YapcCollection {
     private final String name;
-    private final List<YapcCollectionItem> collectionItemList;
+    private final List<YapcRequest> collectionItemList;
 
-    public YapcCollection(String name, List<YapcCollectionItem> collectionItemList) {
+    public YapcCollection(String name, List<YapcRequest> collectionItemList) {
         this.name = name;
         this.collectionItemList = collectionItemList;
     }
@@ -15,7 +15,17 @@ public class YapcCollection {
         return name;
     }
 
-    public List<YapcCollectionItem> getCollectionItemList() {
+    public List<YapcRequest> getCollectionItemList() {
         return collectionItemList;
+    }
+
+    public void deleteItemWithNameFromCollection(String name) {
+
+        for (int i = 0; i < collectionItemList.size(); i++)
+            if (collectionItemList.get(i).name.equals(name)) {
+                collectionItemList.remove(i);
+                break;
+            }
+
     }
 }

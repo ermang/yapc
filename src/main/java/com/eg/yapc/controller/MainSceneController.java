@@ -1,7 +1,7 @@
 package com.eg.yapc.controller;
 
 import com.eg.yapc.YapcCollection;
-import com.eg.yapc.YapcCollectionItem;
+import com.eg.yapc.YapcRequest;
 import com.eg.yapc.YapcSystem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,6 +34,7 @@ public class MainSceneController {
         Parent tabContent = loader.load();
         MainTabSceneController mainTabSceneController = loader.getController();
         mainTabSceneController.setMainSceneController(this);
+        //mainTabSceneController.initData();
 
         Tab tab = new Tab("New Request");
         tab.setContent(tabContent);
@@ -42,6 +43,47 @@ public class MainSceneController {
         mainTabPane.getTabs().add(tab);
         mainTabPane.getSelectionModel().select(tab);
 
+        Tab plusTab = new Tab("+");
+        plusTab.setClosable(false);
+
+        plusTab.setOnSelectionChanged(event -> {
+            if (plusTab.isSelected()) {
+                try {
+                    createNewTab(); // load your FXML
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                // re-select the last real tab
+                Tab lastTab;
+                if (mainTabPane.getTabs().size() >= 2)
+                    lastTab = mainTabPane.getTabs().get(mainTabPane.getTabs().size() - 2);
+                else
+                    lastTab = mainTabPane.getTabs().get(0);
+
+                mainTabPane.getSelectionModel().select(lastTab);
+            }
+        });
+
+        mainTabPane.getTabs().add(plusTab);
+    }
+
+    private void createNewTab() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainTabScene.fxml"));
+
+        Parent tabContent = loader.load();
+        MainTabSceneController mainTabSceneController = loader.getController();
+        mainTabSceneController.setMainSceneController(this);
+
+        Tab tab = new Tab("New Request");
+        tab.setContent(tabContent);
+        tab.setClosable(true);
+
+        if (mainTabPane.getTabs().size() >= 2)
+            mainTabPane.getTabs().add(mainTabPane.getTabs().size() - 2, tab);
+        else
+            mainTabPane.getTabs().add(1, tab);
+
+        mainTabPane.getSelectionModel().select(tab);
     }
 
     @FXML
@@ -59,8 +101,8 @@ public class MainSceneController {
             treeRoot.setExpanded(true);
 
 
-            for (YapcCollectionItem yapcCollectionItem : yapcCollection.getCollectionItemList()) {
-                TreeItem<String> child = new TreeItem<>(yapcCollectionItem.name);
+            for (YapcRequest yapcRequest : yapcCollection.getCollectionItemList()) {
+                TreeItem<String> child = new TreeItem<>(yapcRequest.name);
                 treeRoot.getChildren().add(child);
             }
 
@@ -95,6 +137,9 @@ public class MainSceneController {
         Parent tabContent = loader.load();
         MainTabSceneController mainTabSceneController = loader.getController();
         mainTabSceneController.setMainSceneController(this);
+        YapcRequest yapcRequest = yapcSystem.getItemFromCollection(selectedItem.getParent().getValue(), selectedItem.getValue());
+        mainTabSceneController.updateUiWithExistingYapcCollectiomItem(yapcRequest);
+        mainTabSceneController.initData(selectedItem.getValue(), selectedItem.getParent().getValue());
 
         Tab tab = new Tab(selectedItem.getValue());
         tab.setOnCloseRequest(event -> {openTabNames.remove(selectedItem.getValue());});
@@ -106,8 +151,8 @@ public class MainSceneController {
 
         openTabNames.add(selectedItem.getValue());
 
-
     }
+
 }
 
 

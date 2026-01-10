@@ -1,6 +1,6 @@
 package com.eg.yapc.controller;
 
-import com.eg.yapc.YapcCollectionItem;
+import com.eg.yapc.YapcRequest;
 import com.eg.yapc.YapcSystem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,9 +55,9 @@ public class SaveRequestSceneController {
             return;
         }
 
-        YapcCollectionItem yapcCollectionItem= new YapcCollectionItem(httpMethod, requestNameTextField.getText().trim(), url, requestHeaderList, requestBody);
+        YapcRequest yapcRequest = new YapcRequest(httpMethod, requestNameTextField.getText().trim(), url, requestHeaderList, requestBody);
 
-        yapcSystem.addRequestToCollection(yapcCollectionItem, selectedCollectionName);
+        yapcSystem.addRequestToCollection(yapcRequest, selectedCollectionName);
 
         Stage stage = (Stage) requestNameTextField.getScene().getWindow();
         stage.close();
