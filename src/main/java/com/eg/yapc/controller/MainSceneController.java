@@ -55,11 +55,7 @@ public class MainSceneController {
                 }
                 // re-select the last real tab
                 Tab lastTab;
-                if (mainTabPane.getTabs().size() >= 2)
-                    lastTab = mainTabPane.getTabs().get(mainTabPane.getTabs().size() - 2);
-                else
-                    lastTab = mainTabPane.getTabs().get(0);
-
+                lastTab = mainTabPane.getTabs().get(mainTabPane.getTabs().size() -2);
                 mainTabPane.getSelectionModel().select(lastTab);
             }
         });
@@ -78,12 +74,9 @@ public class MainSceneController {
         tab.setContent(tabContent);
         tab.setClosable(true);
 
-        if (mainTabPane.getTabs().size() >= 2)
-            mainTabPane.getTabs().add(mainTabPane.getTabs().size() - 2, tab);
-        else
-            mainTabPane.getTabs().add(1, tab);
+            mainTabPane.getTabs().add(mainTabPane.getTabs().size() - 1, tab);
 
-        mainTabPane.getSelectionModel().select(tab);
+
     }
 
     @FXML
@@ -146,7 +139,7 @@ public class MainSceneController {
         tab.setContent(tabContent);
         tab.setClosable(true);
 
-        mainTabPane.getTabs().add(tab);
+        mainTabPane.getTabs().add(mainTabPane.getTabs().size() -1, tab);
         mainTabPane.getSelectionModel().select(tab);
 
         openTabNames.add(selectedItem.getValue());

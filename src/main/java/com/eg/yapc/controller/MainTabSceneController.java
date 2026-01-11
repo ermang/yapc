@@ -168,8 +168,6 @@ public class MainTabSceneController {
 //        });
 
         urlTextField.setText("https://httpbin.org/get"); //TODO: remove me
-
-
     }
 
     public void initData(String existingRequestName, String existingCollectionName) {
@@ -223,8 +221,10 @@ public class MainTabSceneController {
     private void onSaveClick(ActionEvent actionEvent) {
         System.out.println("Save clicked");
 
-        if(existingRequestName != null)
+        if(existingRequestName != null) {
             overwriteExistingRequest();
+            return;
+        }
 
 
         try {

@@ -12,9 +12,7 @@ public class YapcSystem {
     private YapcSystem() {
         this.yapcCollectionList = new ArrayList<>();
 
-        List<YapcRequest> yapcRequestList = new ArrayList<>();
-
-        yapcCollectionList.add(new YapcCollection("Dummy Collection", yapcRequestList));
+        yapcCollectionList.add(new YapcCollection("Dummy Collection", new ArrayList<>()));
     }
 
     public static YapcSystem getInstance() {
