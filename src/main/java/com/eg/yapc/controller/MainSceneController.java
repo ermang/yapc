@@ -17,7 +17,7 @@ import java.util.List;
 public class MainSceneController {
 
     @FXML private TabPane mainTabPane;
-    @FXML private VBox collectionsVBox;
+    @FXML private TreeView<String> collectionsTreeView;
 
     private YapcSystem yapcSystem;
 
@@ -89,37 +89,35 @@ public class MainSceneController {
 
     public void reloadCollectionsFromYapcSystem() {
 
-        collectionsVBox.getChildren().clear();
+        TreeItem<String> root = collectionsTreeView.getRoot();
+        root.getChildren().clear();
 
         for (YapcCollection yapcCollection: yapcSystem.getYapcCollectionList()) {
             TreeItem<String> treeRoot = new TreeItem<>(yapcCollection.getName());
             treeRoot.setExpanded(true);
-
 
             for (YapcRequest yapcRequest : yapcCollection.getCollectionItemList()) {
                 TreeItem<String> child = new TreeItem<>(yapcRequest.name);
                 treeRoot.getChildren().add(child);
             }
 
-            TreeView<String> treeView = new TreeView<>(treeRoot);
+            root.getChildren().add(treeRoot);
+        }
 
-            treeView.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2) {
-                    TreeItem<String> selectedItem =
-                            treeView.getSelectionModel().getSelectedItem();
+        collectionsTreeView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                TreeItem<String> selectedItem =
+                        collectionsTreeView.getSelectionModel().getSelectedItem();
 
-                    if (selectedItem != null && selectedItem.getParent() != null) {
-                        try {
-                            onTreeItemDoubleClicked(selectedItem);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                if (selectedItem != null && !selectedItem.getParent().getValue().equals("ROOT")) {
+                    try {
+                        onTreeItemDoubleClicked(selectedItem);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                 }
-            });
-
-            collectionsVBox.getChildren().add(treeView);
-        }
+            }
+        });
     }
 
     private void onTreeItemDoubleClicked(TreeItem<String> selectedItem) throws IOException {

@@ -6,6 +6,9 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.control.TreeItem?>
+
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -46,22 +49,19 @@
     </top>
 
     <left>
-        <VBox spacing="10" >
+        <VBox spacing="10">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
             <Label text="Collections"/>
-<!--            <TreeView fx:id="collectionsTreeView">-->
-<!--                <root>-->
-<!--                    <TreeItem value="Collections" expanded="true">-->
-<!--                        <children>-->
-<!--                            <TreeItem value="Child A"/>-->
-<!--                            <TreeItem value="Child B"/>-->
-<!--                        </children>-->
-<!--                    </TreeItem>-->
-<!--                </root>-->
-<!--            </TreeView>-->
-            <VBox fx:id="collectionsVBox"/>
+            <TreeView fx:id="collectionsTreeView" showRoot="false">
+                <root>
+                    <TreeItem value="ROOT" expanded="true">
+                        <children>
+                        </children>
+                    </TreeItem>
+                </root>
+            </TreeView>
         </VBox>
     </left>
 
