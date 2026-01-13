@@ -45,6 +45,7 @@ public class MainTabSceneController {
     private String existingRequestName;
     private String existingCollectionName;
     private YapcRequest yapcRequest;
+    private Tab tab;
 
     @FXML
     public void initialize() {
@@ -92,6 +93,7 @@ public class MainTabSceneController {
             return row;
         });
 
+        requestHeaderTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         requestHeaderTableView.getSelectionModel().setCellSelectionEnabled(true);
 
 
@@ -250,6 +252,8 @@ public class MainTabSceneController {
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL); // optional
             stage.showAndWait();
+            String s = saveRequestSceneController.getRequestName();
+            this.tab.setText(s);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -281,5 +285,9 @@ public class MainTabSceneController {
 
         this.urlTextField.setText(yapcRequest.url);
         this.requestBodyTextArea.setText(yapcRequest.requestBody);
+    }
+
+    public void setTab(Tab tab) {
+        this.tab = tab;
     }
 }

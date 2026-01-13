@@ -20,13 +20,11 @@ public class MainSceneController {
     @FXML private VBox collectionsVBox;
 
     private YapcSystem yapcSystem;
-    private List<String> openTabNames;
-
 
     @FXML
     public void initialize() throws IOException {
         yapcSystem = YapcSystem.getInstance();
-        openTabNames = new ArrayList<>();
+
         reloadCollectionsFromYapcSystem();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainTabScene.fxml"));
@@ -36,9 +34,12 @@ public class MainSceneController {
         mainTabSceneController.setMainSceneController(this);
 
 
+
         Tab tab = new Tab("New Request");
         tab.setContent(tabContent);
         tab.setClosable(true);
+
+        mainTabSceneController.setTab(tab);
 
         mainTabPane.getTabs().add(tab);
         mainTabPane.getSelectionModel().select(tab);
@@ -73,8 +74,9 @@ public class MainSceneController {
         Tab tab = new Tab("New Request");
         tab.setContent(tabContent);
         tab.setClosable(true);
+        mainTabSceneController.setTab(tab);
 
-            mainTabPane.getTabs().add(mainTabPane.getTabs().size() - 1, tab);
+        mainTabPane.getTabs().add(mainTabPane.getTabs().size() - 1, tab);
 
 
     }
@@ -122,7 +124,7 @@ public class MainSceneController {
 
     private void onTreeItemDoubleClicked(TreeItem<String> selectedItem) throws IOException {
 
-        if (openTabNames.contains(selectedItem.getValue()))
+        if (mainTabPane.getTabs().stream().map(Tab::getText).toList().contains(selectedItem.getValue()))
             return;
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainTabScene.fxml"));
@@ -135,14 +137,12 @@ public class MainSceneController {
         mainTabSceneController.initData(selectedItem.getValue(), selectedItem.getParent().getValue());
 
         Tab tab = new Tab(selectedItem.getValue());
-        tab.setOnCloseRequest(event -> {openTabNames.remove(selectedItem.getValue());});
+
         tab.setContent(tabContent);
         tab.setClosable(true);
 
         mainTabPane.getTabs().add(mainTabPane.getTabs().size() -1, tab);
         mainTabPane.getSelectionModel().select(tab);
-
-        openTabNames.add(selectedItem.getValue());
 
     }
 

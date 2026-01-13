@@ -38,9 +38,9 @@
 
     <TableView fx:id="requestHeaderTableView" editable="true">
         <columns>
-            <TableColumn fx:id="requestHeaderNameColumn" text="Header Name"/>
+            <TableColumn fx:id="requestHeaderNameColumn" text="Header Name"  prefWidth="50"/>
             <TableColumn fx:id="requestHeaderValueColumn" text="Header Value" editable="true"/>
-            <TableColumn fx:id="addRemoveButtonColumn" text="Add/Remove"/>
+            <TableColumn fx:id="addRemoveButtonColumn" text="Add/Remove"  prefWidth="25"/>
         </columns>
     </TableView>
 

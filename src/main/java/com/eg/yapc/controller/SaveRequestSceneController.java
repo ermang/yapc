@@ -70,6 +70,10 @@ public class SaveRequestSceneController {
         this.requestHeaderList = requestHeadersList;
         this.requestBody = requestBody;
     }
+
+    public String getRequestName() {
+        return requestNameTextField.getText().trim();
+    }
 }
 
 
