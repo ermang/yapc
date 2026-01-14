@@ -54,6 +54,12 @@ public class MainTabSceneController {
         httpMethodComboBox.getSelectionModel().selectFirst();
 
 
+        int maxRows = 5;
+        requestHeaderTableView.setFixedCellSize(24); // row height in pixels
+        requestHeaderTableView.prefHeightProperty().bind(
+                requestHeaderTableView.fixedCellSizeProperty().multiply(maxRows + 1)
+        );
+
         //request header block begin
         requestHeaderTableView.setEditable(true);
 
@@ -148,26 +154,6 @@ public class MainTabSceneController {
                   "key": "value"
                 }
                 """ );
-
-        //TODO: FIX
-        //set request header table size dynamically
-//        requestHeaderTableView.sceneProperty().addListener((obs, oldScene, newScene) -> {
-//            if (newScene != null) {
-//                Platform.runLater(() -> {
-//                    // this runs AFTER the TableView is in the scene and layout is done
-//                    Node header = requestHeaderTableView.lookup("TableHeaderRow");
-//                    double headerHeight = header.prefHeight(-1);
-//                    double rowHeight = requestHeaderTableView.getFixedCellSize() > 0
-//                            ? requestHeaderTableView.getFixedCellSize()
-//                            : 24;
-//                    int visibleRows = requestHeaderTableView.getItems().size() + 3; //show ~3 empty rows
-//
-//                    requestHeaderTableView.setPrefHeight(headerHeight + rowHeight * visibleRows);
-//                    requestHeaderTableView.setMinHeight(Region.USE_PREF_SIZE);
-//                    requestHeaderTableView.setMaxHeight(Region.USE_PREF_SIZE);
-//                });
-//            }
-//        });
 
         urlTextField.setText("https://httpbin.org/get"); //TODO: remove me
     }

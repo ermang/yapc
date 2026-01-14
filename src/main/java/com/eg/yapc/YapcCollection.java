@@ -6,9 +6,9 @@ public class YapcCollection {
     private final String name;
     private final List<YapcRequest> collectionItemList;
 
-    public YapcCollection(String name, List<YapcRequest> collectionItemList) {
+    public YapcCollection(String name, List<YapcRequest> yapcRequestList) {
         this.name = name;
-        this.collectionItemList = collectionItemList;
+        this.collectionItemList = yapcRequestList;
     }
 
     public String getName() {
