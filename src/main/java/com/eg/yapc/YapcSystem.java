@@ -1,12 +1,10 @@
 package com.eg.yapc;
 
+import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.node.ObjectNode;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +12,13 @@ public class YapcSystem {
 
     private static YapcSystem INSTANCE;
 
-    private final List<YapcCollection> yapcCollectionList;
+    private List<YapcCollection> yapcCollectionList;
 
     private YapcSystem() {
-        this.yapcCollectionList = new ArrayList<>();
 
-        yapcCollectionList.add(new YapcCollection("Dummy Collection", new ArrayList<>()));
+        tryLoadCollectionsFromFile();
+
+
     }
 
     public static YapcSystem getInstance() {
@@ -59,7 +58,7 @@ public class YapcSystem {
         for (YapcCollection yapcCollection : yapcCollectionList)
             if (collectionName.equals(yapcCollection.getName()))
                 for (YapcRequest yapcRequest : yapcCollection.getYapcRequestList())
-                    if (requestName.equals(yapcRequest.name))
+                    if (requestName.equals(yapcRequest.name()))
                         return yapcRequest;
 
         return null;
@@ -69,12 +68,19 @@ public class YapcSystem {
         yapcCollectionList.add(new YapcCollection(collectionName, new ArrayList<>()));
     }
 
-    private void loadCollectionsFromFile() {
-        Path path = Path.of("yapc.properties");
+    private void tryLoadCollectionsFromFile() {
+        ObjectMapper mapper = new ObjectMapper();
+        File file = new File("yapc_collection_list.json");
 
-        if (!Files.exists(path))
-            System.out.println("File does not exist!");
+        if (file.exists()) {
+            List<YapcCollection> yapcCollections = mapper.readValue(file, new TypeReference<List<YapcCollection>>() {
+            });
 
+            this.yapcCollectionList = yapcCollections;
+        } else {
+            this.yapcCollectionList = new ArrayList<>();
+            yapcCollectionList.add(new YapcCollection("Dummy Collection", new ArrayList<>()));
+        }
 
 
     }
@@ -88,14 +94,13 @@ public class YapcSystem {
             }
     }
 
-    public void exportToFile() {
+    public void exportCollectionsToFile() {
         ObjectMapper mapper = new ObjectMapper();
 
         JsonNode node = mapper.valueToTree(yapcCollectionList);
 
         File file = new File("yapc_collection_list.json");
         mapper.writerWithDefaultPrettyPrinter().writeValue(file, node);
-
     }
 
 

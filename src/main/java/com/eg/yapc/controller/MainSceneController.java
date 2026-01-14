@@ -107,7 +107,7 @@ public class MainSceneController {
             treeRoot.setExpanded(true);
 
             for (YapcRequest yapcRequest : yapcCollection.getYapcRequestList()) {
-                TreeItem<String> child = new TreeItem<>(yapcRequest.name);
+                TreeItem<String> child = new TreeItem<>(yapcRequest.name());
                 treeRoot.getChildren().add(child);
             }
 

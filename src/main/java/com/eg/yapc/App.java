@@ -25,7 +25,7 @@ public class App extends Application {
 
         stage.setOnCloseRequest(event ->{
             System.out.println("writing to file");
-            YapcSystem.getInstance().exportToFile();
+            YapcSystem.getInstance().exportCollectionsToFile();
         } );
         stage.show();
     }

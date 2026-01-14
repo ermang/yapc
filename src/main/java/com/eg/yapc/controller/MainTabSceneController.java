@@ -259,15 +259,15 @@ public class MainTabSceneController {
 
         int index = -1;
         for(int i=0;i<this.httpMethodComboBox.getItems().size();i++) {
-            if (yapcRequest.httpMethod.equals(this.httpMethodComboBox.getItems().get(i))) {
+            if (yapcRequest.httpMethod().equals(this.httpMethodComboBox.getItems().get(i))) {
                 index = i;
                 break;
             }
         }
 
         this.httpMethodComboBox.getSelectionModel().select(index);
-        this.urlTextField.setText(yapcRequest.url);
-        this.requestBodyTextArea.setText(yapcRequest.requestBody);
+        this.urlTextField.setText(yapcRequest.url());
+        this.requestBodyTextArea.setText(yapcRequest.requestBody());
     }
 
     public void setTab(Tab tab) {
