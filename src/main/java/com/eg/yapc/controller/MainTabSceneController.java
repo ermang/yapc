@@ -4,6 +4,7 @@ import com.eg.yapc.RequestHeaderItem;
 import com.eg.yapc.YapcConstant;
 import com.eg.yapc.YapcRequest;
 import com.eg.yapc.YapcSystem;
+import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -52,13 +53,6 @@ public class MainTabSceneController {
         this.yapcSystem = YapcSystem.getInstance();
 
         httpMethodComboBox.getSelectionModel().selectFirst();
-
-
-        int maxRows = 5;
-        requestHeaderTableView.setFixedCellSize(24); // row height in pixels
-        requestHeaderTableView.prefHeightProperty().bind(
-                requestHeaderTableView.fixedCellSizeProperty().multiply(maxRows + 1)
-        );
 
         //request header block begin
         requestHeaderTableView.setEditable(true);
