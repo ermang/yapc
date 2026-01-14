@@ -4,7 +4,6 @@ import com.eg.yapc.RequestHeaderItem;
 import com.eg.yapc.YapcConstant;
 import com.eg.yapc.YapcRequest;
 import com.eg.yapc.YapcSystem;
-import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,10 +22,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class MainTabSceneController {
 
@@ -215,15 +211,14 @@ public class MainTabSceneController {
 
             SaveRequestSceneController saveRequestSceneController = loader.getController();
 
-            List<String> requestHeadersList = new ArrayList<>();
+            Map<String, String> requestHeaderMap = new HashMap<>();
 
-            for (RequestHeaderItem requestHeaderItem : requestHeaderTableView.getItems()) {
-                requestHeadersList.add(requestHeaderItem.getHeaderName());
-                requestHeadersList.add(requestHeaderItem.getHeaderValue());
-            }
+            for (RequestHeaderItem requestHeaderItem : requestHeaderTableView.getItems())
+                if (!requestHeaderItem.getHeaderName().isBlank() && !requestHeaderItem.getHeaderValue().isBlank())
+                    requestHeaderMap.put(requestHeaderItem.getHeaderName(), requestHeaderItem.getHeaderValue());
 
             saveRequestSceneController.initData(httpMethodComboBox.getSelectionModel().getSelectedItem(), urlTextField.getText().trim(),
-                    requestHeadersList, requestBodyTextArea.getText().trim());
+                    requestHeaderMap, requestBodyTextArea.getText().trim());
 
             Scene scene = new Scene(root);
 
@@ -246,14 +241,13 @@ public class MainTabSceneController {
     }
 
     private void overwriteExistingRequest() {
-        List<String> requestHeadersList = new ArrayList<>();
+        Map<String, String> requestHeadersMap = new HashMap<>();
 
-        for (RequestHeaderItem requestHeaderItem : requestHeaderTableView.getItems()) {
-            requestHeadersList.add(requestHeaderItem.getHeaderName());
-            requestHeadersList.add(requestHeaderItem.getHeaderValue());
-        }
+        for (RequestHeaderItem requestHeaderItem : requestHeaderTableView.getItems())
+            if (!requestHeaderItem.getHeaderName().isBlank() && !requestHeaderItem.getHeaderValue().isBlank())
+                requestHeadersMap.put(requestHeaderItem.getHeaderName(), requestHeaderItem.getHeaderValue());
 
-        YapcRequest yapcRequest = new YapcRequest(httpMethodComboBox.getSelectionModel().getSelectedItem(), existingRequestName, urlTextField.getText().trim(), requestHeadersList,
+        YapcRequest yapcRequest = new YapcRequest(httpMethodComboBox.getSelectionModel().getSelectedItem(), existingRequestName, urlTextField.getText().trim(), requestHeadersMap,
                 requestBodyTextArea.getText().trim());
 
         yapcSystem.removeRequestFromCollection(existingRequestName, existingCollectionName);

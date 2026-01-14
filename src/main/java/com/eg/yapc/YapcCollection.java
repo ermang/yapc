@@ -4,26 +4,26 @@ import java.util.List;
 
 public class YapcCollection {
     private final String name;
-    private final List<YapcRequest> collectionItemList;
+    private final List<YapcRequest> yapcRequestList;
 
     public YapcCollection(String name, List<YapcRequest> yapcRequestList) {
         this.name = name;
-        this.collectionItemList = yapcRequestList;
+        this.yapcRequestList = yapcRequestList;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<YapcRequest> getCollectionItemList() {
-        return collectionItemList;
+    public List<YapcRequest> getYapcRequestList() {
+        return yapcRequestList;
     }
 
     public void deleteItemWithNameFromCollection(String name) {
 
-        for (int i = 0; i < collectionItemList.size(); i++)
-            if (collectionItemList.get(i).name.equals(name)) {
-                collectionItemList.remove(i);
+        for (int i = 0; i < yapcRequestList.size(); i++)
+            if (yapcRequestList.get(i).name.equals(name)) {
+                yapcRequestList.remove(i);
                 break;
             }
 

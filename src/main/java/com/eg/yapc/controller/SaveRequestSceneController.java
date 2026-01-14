@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Map;
 
 public class SaveRequestSceneController {
 
@@ -21,7 +22,7 @@ public class SaveRequestSceneController {
     @FXML private ListView<String> collectionNamesListView;
     private String httpMethod;
     private String url;
-    private List<String> requestHeaderList;
+    private Map<String, String> requestHeaderMap;
     private String requestBody;
 
     @FXML
@@ -55,7 +56,7 @@ public class SaveRequestSceneController {
             return;
         }
 
-        YapcRequest yapcRequest = new YapcRequest(httpMethod, requestNameTextField.getText().trim(), url, requestHeaderList, requestBody);
+        YapcRequest yapcRequest = new YapcRequest(httpMethod, requestNameTextField.getText().trim(), url, requestHeaderMap, requestBody);
 
         yapcSystem.addRequestToCollection(yapcRequest, selectedCollectionName);
 
@@ -64,10 +65,10 @@ public class SaveRequestSceneController {
     }
 
 
-    public void initData(String httpMethod, String url, List<String> requestHeadersList, String requestBody) {
+    public void initData(String httpMethod, String url, Map<String, String> requestHeadersMap, String requestBody) {
         this.httpMethod= httpMethod;
         this.url = url;
-        this.requestHeaderList = requestHeadersList;
+        this.requestHeaderMap = requestHeadersMap;
         this.requestBody = requestBody;
     }
 

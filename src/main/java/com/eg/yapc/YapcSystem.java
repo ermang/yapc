@@ -1,5 +1,10 @@
 package com.eg.yapc;
 
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +39,7 @@ public class YapcSystem {
     public void addRequestToCollection(YapcRequest yapcRequest, String collectionName) {
         for (YapcCollection yapcCollection : yapcCollectionList) {
             if (collectionName.equals(yapcCollection.getName())) {
-                yapcCollection.getCollectionItemList().add(yapcRequest);
+                yapcCollection.getYapcRequestList().add(yapcRequest);
             }
         }
     }
@@ -51,7 +56,7 @@ public class YapcSystem {
     public YapcRequest getItemFromCollection(String collectionName, String requestName) {
         for (YapcCollection yapcCollection : yapcCollectionList)
             if (collectionName.equals(yapcCollection.getName()))
-                for (YapcRequest yapcRequest : yapcCollection.getCollectionItemList())
+                for (YapcRequest yapcRequest : yapcCollection.getYapcRequestList())
                     if (requestName.equals(yapcRequest.name))
                         return yapcRequest;
 
@@ -61,4 +66,34 @@ public class YapcSystem {
     public void addCollection(String collectionName) {
         yapcCollectionList.add(new YapcCollection(collectionName, new ArrayList<>()));
     }
+
+    private void loadCollectionsFromFile() {
+        Path path = Path.of("yapc.properties");
+
+        if (!Files.exists(path))
+            System.out.println("File does not exist!");
+
+
+
+    }
+
+    public void exportCollection(String collectionName) {
+        for (YapcCollection yapcCollection : yapcCollectionList)
+            if (collectionName.equals(yapcCollection.getName())) {
+                String name = yapcCollection.getName();
+                List<YapcRequest> yapcRequestList = yapcCollection.getYapcRequestList();
+
+            }
+    }
+
+    public void exportToFile() {
+        ObjectMapper mapper = new ObjectMapper();
+
+        // Create root ObjectNode
+        ObjectNode root = mapper.createObjectNode();
+
+        //root.put
+    }
+
+
 }
