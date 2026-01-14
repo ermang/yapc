@@ -1,8 +1,10 @@
 package com.eg.yapc;
 
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.node.ObjectNode;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -89,11 +91,13 @@ public class YapcSystem {
     public void exportToFile() {
         ObjectMapper mapper = new ObjectMapper();
 
-        // Create root ObjectNode
-        ObjectNode root = mapper.createObjectNode();
+        JsonNode node = mapper.valueToTree(yapcCollectionList);
 
-        //root.put
+        File file = new File("yapc_collection_list.json");
+        mapper.writerWithDefaultPrettyPrinter().writeValue(file, node);
+
     }
+
 
 
 }

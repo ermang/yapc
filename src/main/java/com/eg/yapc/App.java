@@ -22,6 +22,11 @@ public class App extends Application {
         Scene scene = new Scene(root, Color.TRANSPARENT);
         stage.setTitle("YAPC");
         stage.setScene(scene);
+
+        stage.setOnCloseRequest(event ->{
+            System.out.println("writing to file");
+            YapcSystem.getInstance().exportToFile();
+        } );
         stage.show();
     }
 }
