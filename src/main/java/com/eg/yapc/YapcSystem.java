@@ -19,6 +19,7 @@ public class YapcSystem {
         if (INSTANCE == null) {
             INSTANCE = new YapcSystem();
         }
+
         return INSTANCE;
     }
 
@@ -55,5 +56,9 @@ public class YapcSystem {
                         return yapcRequest;
 
         return null;
+    }
+
+    public void addCollection(String collectionName) {
+        yapcCollectionList.add(new YapcCollection(collectionName, new ArrayList<>()));
     }
 }

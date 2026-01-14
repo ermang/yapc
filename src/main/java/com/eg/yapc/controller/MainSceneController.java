@@ -8,11 +8,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 public class MainSceneController {
 
@@ -84,6 +82,18 @@ public class MainSceneController {
     @FXML
     private void onNewCollectionClicked(ActionEvent event) {
         System.out.println("onNewCollectionClicked");
+
+        TextInputDialog dialog = new TextInputDialog("my_collection");
+        dialog.setTitle("New Collection");
+        dialog.setHeaderText("Collection Name:");
+        dialog.setContentText("Collection Name:");
+
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+                yapcSystem.addCollection(result.get());
+                reloadCollectionsFromYapcSystem();
+        }
 
     }
 
