@@ -155,7 +155,9 @@ public class MainTabSceneController {
 
     @FXML
     private void onSendClick(ActionEvent actionEvent) throws IOException, InterruptedException {
-        System.out.println("onSendClick");
+        responseBodyTextArea.setText("");
+        responseStatusLabel.setText("");
+        responseHeadersTextArea.setText("");
 
         String httpMethod = httpMethodComboBox.getSelectionModel().getSelectedItem();
 
@@ -183,7 +185,7 @@ public class MainTabSceneController {
         System.out.println("Body:\n" + response.body());
         Map<String, List<String>> responseHeadersMap = response.headers().map();
 
-        responseHeadersTextArea.setText("");
+
 
         for (Map.Entry<String, List<String>> entry : new TreeMap<>(responseHeadersMap).entrySet()) {
             responseHeadersTextArea.appendText(entry.getKey() + ":");
