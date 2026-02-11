@@ -48,7 +48,7 @@ public class MainSceneController {
         plusTab.setOnSelectionChanged(event -> {
             if (plusTab.isSelected()) {
                 try {
-                    createNewTab(); // load your FXML
+                    createAndAddNewTab(); // load your FXML
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -62,7 +62,7 @@ public class MainSceneController {
         mainTabPane.getTabs().add(plusTab);
     }
 
-    private void createNewTab() throws IOException {
+    private void createAndAddNewTab() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainTabScene.fxml"));
 
         Parent tabContent = loader.load();
@@ -75,8 +75,6 @@ public class MainSceneController {
         mainTabSceneController.setTab(tab);
 
         mainTabPane.getTabs().add(mainTabPane.getTabs().size() - 1, tab);
-
-
     }
 
     @FXML
@@ -128,6 +126,8 @@ public class MainSceneController {
                 }
             }
         });
+
+
     }
 
     private void onTreeItemDoubleClicked(TreeItem<String> selectedItem) throws IOException {

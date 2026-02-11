@@ -69,10 +69,11 @@ public class YapcSystem {
     }
 
     private void tryLoadCollectionsFromFile() {
-        ObjectMapper mapper = new ObjectMapper();
+
         File file = new File("yapc_collection_list.json");
 
         if (file.exists()) {
+            ObjectMapper mapper = new ObjectMapper();
             List<YapcCollection> yapcCollections = mapper.readValue(file, new TypeReference<List<YapcCollection>>() {
             });
 
