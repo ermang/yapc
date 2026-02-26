@@ -132,9 +132,24 @@ public class MainSceneController {
 
     private void onTreeItemDoubleClicked(TreeItem<String> selectedItem) throws IOException {
 
-        if (mainTabPane.getTabs().stream().map(Tab::getText).toList().contains(selectedItem.getValue()))
-            return;
+        if (mainTabPane.getTabs().stream().map(Tab::getText).toList().contains(selectedItem.getValue())) {
+            refocusOpenedTab(selectedItem);
+        } else
+            openTabFromYapcRequest(selectedItem);
 
+    }
+
+    private void refocusOpenedTab(TreeItem<String> selectedItem) {
+        for (int i=0;i<mainTabPane.getTabs().size();i++) {
+            if (selectedItem.getValue().equals(mainTabPane.getTabs().get(i).getText())) {
+                mainTabPane.getSelectionModel().select(mainTabPane.getTabs().get(i));
+                break;
+            }
+        }
+
+    }
+
+    private void openTabFromYapcRequest(TreeItem<String> selectedItem) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainTabScene.fxml"));
 
         Parent tabContent = loader.load();
@@ -151,7 +166,6 @@ public class MainSceneController {
 
         mainTabPane.getTabs().add(mainTabPane.getTabs().size() -1, tab);
         mainTabPane.getSelectionModel().select(tab);
-
     }
 
 }
